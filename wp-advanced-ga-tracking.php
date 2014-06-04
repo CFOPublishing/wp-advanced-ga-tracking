@@ -49,7 +49,7 @@ class Advanced_Google_Analytics_Tracking {
     
 	// See http://php.net/manual/en/language.oop5.decon.php to get a better understanding of what's going on here.
 	private function __construct() {
-        
+        add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts' ) );    
     }
     
 	/**
@@ -73,7 +73,7 @@ class Advanced_Google_Analytics_Tracking {
     /**
      * Echo an event tracking code for Google Analytics. 
      */
-    public function the_event_tracking($category, $action, $label, $value = 1, $noninteraction = false){
+    public function the_event_tracking($category, $action, $label, $value = 1, $noninteraction = false, $a_ready = true){
         if (!is_int($value)){
             $value = 1;
         }
@@ -81,7 +81,7 @@ class Advanced_Google_Analytics_Tracking {
             $noninteraction = false;
         }
         $boolString = ($noninteraction) ? 'true' : 'false';
-        $s = sprintf('onClick="_gaq.push([%1$s, %2$s, %3$s, %4$s, %5$s, %6$s]);"',
+        $s = sprintf('_gaq.push([%1$s, %2$s, %3$s, %4$s, %5$s, %6$s]);',
             "'_trackEvent'",
             "'" . get_for_google_analytics($category) . "'",
             "'" . get_for_google_analytics($action) . "'",
@@ -90,9 +90,31 @@ class Advanced_Google_Analytics_Tracking {
             $boolString
 
         );
+        
+        if ($a_ready){
+            $s = 'onClick="' . $s . '"';
+        }
 
         echo $s;
-    }    
+    }
+    
+    public function add_scripts($hook){
+        global $pagenow;
+        
+        $ga_js = get_option(AGATT_SLUG.'_google_analytics_js', array());
+        $ga_js_a = array($ga_js);
+        $deps = array('jquery');
+        $deps_merged = array_merge($deps, $ga_js_a);
+        
+        if (true == SCRIPT_DEBUG){
+            wp_register_script(AGATT_SLUG . '-scrolldepth', AGATT_SLUG . 'library/jquery-scrolldepth/jquery.scrolldepth.js' , $deps_merged); 
+        } else {
+            wp_register_script(AGATT_SLUG . '-scrolldepth', AGATT_SLUG . 'library/jquery-scrolldepth/jquery.scrolldepth.min.js' , $deps_merged);    
+        }
+        
+        wp_enqueue_script(AGATT_SLUG . '-scrolldepth');
+    
+    }
     
 }
 
