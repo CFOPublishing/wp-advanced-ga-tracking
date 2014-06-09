@@ -22,4 +22,24 @@ class AGATT_Admin {
         
     }
     
+    public function agatt_settings_page(){
+        
+        add_settings_section(
+            'agatt-goog-analytics',
+            __('Advanced Google Analytics Options', 'agatt'),
+            array($this, 'agatt_goog_analytics_section'),
+            AGATT_MENU_SLUG
+        );
+        
+        add_settings_field(
+            'agatt-goog-analytics-scroll',
+            __('Activate scroll tracking', 'agatt'),
+            array($this, 'agatt_scroll_tracking'),
+            AGATT_MENU_SLUG,
+            'agatt-goog-analytics'
+        );
+        
+        
+        submit_button(); 
+    
 }
