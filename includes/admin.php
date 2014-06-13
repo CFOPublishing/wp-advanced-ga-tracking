@@ -41,5 +41,27 @@ class AGATT_Admin {
         
         
         submit_button(); 
+        
+    }
+    
+    public function agatt_user_set_js_variables(){
+        
+        ?>
+        <script type="text/javascript">
+            var agatt_scrolledElements = [];
+            <?php 
+                if (!empty($user_set_scrolledElements)){
+                    ?>
+                    agatt_scrolledElements = [<?php echo $user_set_scrolledElements; ?>];
+                    <?php 
+                }
+            ?>
+            var agatt_sd_minHeight = 0;
+            var agatt_sd_percentage = true;
+            var agatt_sd_userTiming = true;
+            var agatt_sd_pixel_Depth = true;
+        </script>
+        <?php 
+    }
     
 }
