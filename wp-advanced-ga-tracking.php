@@ -46,32 +46,32 @@ class Advanced_Google_Analytics_Tracking {
 
 		return $instance;
 	}
-    
+
 	// See http://php.net/manual/en/language.oop5.decon.php to get a better understanding of what's going on here.
 	private function __construct() {
-        add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts' ) );    
+        add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts' ) );
     }
-    
+
 	/**
 	 * Include necessary files
 	 *
 	 * @since 1.7
 	 */
 	function includes() {
-       require_once( AGATT_ROOT . '/includes/admin.php' );     
+       require_once( AGATT_ROOT . '/includes/admin.php' );
     }
-    
+
     /**
      * Get a safe string for custom variables or event tracking for Google Analytics.
      */
     public function get_for_google_analytics($string){
-        $string = strip_tags($string); 
+        $string = strip_tags($string);
         $string = remove_accents( html_entity_decode($string) );
-        $safe_string = esc_js( $string ); 
+        $safe_string = esc_js( $string );
         return $safe_string;
     }
     /**
-     * Echo an event tracking code for Google Analytics. 
+     * Echo an event tracking code for Google Analytics.
      */
     public function the_event_tracking($category, $action, $label, $value = 1, $noninteraction = false, $a_ready = true){
         if (!is_int($value)){
@@ -90,32 +90,45 @@ class Advanced_Google_Analytics_Tracking {
             $boolString
 
         );
-        
+
         if ($a_ready){
             $s = 'onClick="' . $s . '"';
         }
 
         echo $s;
     }
-    
+
     public function add_scripts($hook){
         global $pagenow;
-        
+
         $ga_js = get_option(AGATT_SLUG.'_google_analytics_js', array());
         $ga_js_a = array($ga_js);
         $deps = array('jquery');
         $deps_merged = array_merge($deps, $ga_js_a);
-        
+
         if (true == SCRIPT_DEBUG){
-            wp_register_script(AGATT_SLUG . '-scrolldepth', AGATT_SLUG . 'library/jquery-scrolldepth/jquery.scrolldepth.js' , $deps_merged); 
+            wp_register_script(AGATT_SLUG . '-scrolldepth', AGATT_SLUG . 'library/jquery-scrolldepth/jquery.scrolldepth.js' , $deps_merged);
         } else {
-            wp_register_script(AGATT_SLUG . '-scrolldepth', AGATT_SLUG . 'library/jquery-scrolldepth/jquery.scrolldepth.min.js' , $deps_merged);    
+            wp_register_script(AGATT_SLUG . '-scrolldepth', AGATT_SLUG . 'library/jquery-scrolldepth/jquery.scrolldepth.min.js' , $deps_merged);
         }
-        
+
         wp_enqueue_script(AGATT_SLUG . '-scrolldepth');
-    
+
     }
-    
+
+    public function create_basic_jquery_ga_click_events($args){
+
+      ?>jQuery(window).load(function() {<?php
+      foreach ($args as $event){
+        jQuery('body').on("click", "<?php echo $event['domElement'] ?>", function() {
+          self::the_event_tracking($event['category'], $event['action'], $event['label'], 1, false, false);
+        });
+
+      }
+      ?>});<?php
+
+    }
+
 }
 
 /**
