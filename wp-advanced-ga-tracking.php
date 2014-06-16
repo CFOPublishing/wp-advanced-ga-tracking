@@ -124,7 +124,7 @@ class Advanced_Google_Analytics_Tracking {
         #Should we be minifying the output via https://github.com/tedious/JShrink instead?
       ?>jQuery(window).load(function() {<?php
       foreach ($args as $event){
-        jQuery('body').on("click", "<?php echo $event['domElement'] ?>", function() {
+        jQuery('body').on("click", "<?php echo $event['domElement']; ?>", function() {
           self::the_event_tracking($event['category'], $event['action'], $event['label'], 1, false, false);
         });
 

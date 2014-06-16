@@ -51,7 +51,8 @@ class AGATT_Admin {
               'parent-element'   =>  'scrolldepth',
               'element'          =>  'scroll_tracking_check',
               'type'             =>  'checkbox',
-              'label_for'        =>  'Turn on scroll tracking. <a href="http://scrolldepth.parsnip.io/" target="_blank">Learn more.</a>'
+              'label_for'        =>  'Turn on scroll tracking. <a href="http://scrolldepth.parsnip.io/" target="_blank">Learn more.</a>',
+              'default'          =>  'false'    
 
             )
         );
@@ -67,7 +68,7 @@ class AGATT_Admin {
               'element'          =>  'scrolledElements',
               'type'             =>  'text',
               'label_for'        =>  'Scrolling past these items will trigger an event.',
-              'default'          =>  'false'
+              'default'          =>  ''
 
 
             )
@@ -148,7 +149,18 @@ class AGATT_Admin {
               'element'         =>  'track_these_elements',
               'type'            =>  'repeating_text',
               'label_for'       =>  'List tracked elements.',
-              'default'          =>  ''
+              'default'         =>  array(0 => array(
+                                        'domElement' => 'body',
+                                        'category'   => 'primary_elements',
+                                        'action'     => 'click',
+                                        'label'      => 'Body Click'
+                                    ),
+              'fields'          =>  array(
+                                        'DOM Element'       =>  'domElement',
+                                        'Object Group Name' =>  'category',
+                                        'Action'            =>  'action',
+                                        'Event Label'       =>  'label'
+                                    )
             )
         );
 
@@ -201,13 +213,44 @@ class AGATT_Admin {
       $default = $args['default'];
       switch ($type) {
           case 'checkbox':
-            #stuff
+            $check = self::agatt_setting($args, $default);
+            if ('true' == $check){
+                $mark = 'checked';
+            } else {
+                $mark = '';
+            }
+            echo '<input type="checkbox" name="agatt-settings['.$parent_element.']['.$element.']" value="true" '.$mark.' />  <label for="agatt-settings['.$parent_element.']['.$element.']">' . $label . '</label>';
             break;
           case: 'text':
             echo "<input type='text' name='agatt-settings[".$parent_element."][".$element."]' value='".esc_attr(self::agatt_setting($args, $default))."' /> <label for='agatt-settings[".$parent_element."][".$element."]'>" . $label . "</label>";
             break;
           case: 'repeating_text':
-            #stuff
+            $fields = $args['fields'];
+            $c = 0;
+            $group = self::agatt_setting($args, $default);
+            ?>
+            <h3 class="agatt-event">Events to track:</h3>
+            <ul>
+                <?php foreach ($group as $event){ 
+                    if ($c > 0) { $id_c = '-'.$c; } else { $id_c = ''; }
+                ?>
+                    <li class="repeat-element repeat-element-<?php echo $element; ?>" id="repeat-element-<?php echo $element; echo $id_c; ?>">
+                        
+                        <?php
+
+                            foreach ($fields as $f_label => $field){
+                                echo '<input type="text" name="agatt-settings['.$parent_element.']['.$element.']['.$c.']['.$field.']" value="'.esc_attr($event[$field]).'" /> <label for="agatt-settings['.$parent_element.']['.$element.']['.$c.']['.$field.']">' . $f_label . '</label>';
+
+                            }
+                        ?>
+                        <a class="repeat-element-remover" href="#">Remove</a>
+                    </li>
+                <?php
+                $c++;
+                ?>
+                }
+            </ul>
+            <?php
             break;
       }
           
