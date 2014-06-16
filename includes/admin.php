@@ -66,7 +66,9 @@ class AGATT_Admin {
               'parent-element'   =>  'scrolldepth',
               'element'          =>  'scrolledElements',
               'type'             =>  'text',
-              'label_for'        =>  'Scrolling past these items will trigger an event.'
+              'label_for'        =>  'Scrolling past these items will trigger an event.',
+              'default'          =>  'false'
+
 
             )
         );
@@ -81,7 +83,8 @@ class AGATT_Admin {
               'parent-element'   =>  'scrolldepth',
               'element'          =>  'minHeight',
               'type'             =>  'text',
-              'label_for'        =>  'Minimum height'
+              'label_for'        =>  'Minimum height',
+              'default'          =>  0
 
             )
         );
@@ -144,8 +147,8 @@ class AGATT_Admin {
               'parent-element'  =>  'click_tracker',
               'element'         =>  'track_these_elements',
               'type'            =>  'repeating_text',
-              'label_for'       =>  'List tracked elements.'
-              'default'          =>  'true'
+              'label_for'       =>  'List tracked elements.',
+              'default'          =>  ''
             )
         );
 
@@ -170,15 +173,21 @@ class AGATT_Admin {
       echo 'Set up options for advanced Google Analytics tracking.'
     }
     
-    public function agatt_setting($args){
+    public function agatt_setting($args, $default = ''){
           # Once we're sure that we've enforced singleton, we'll take care of it that way.
           if (empty($agatt_settings)){
             $agatt_settings = get_option( $this->option_name, array() );
           }
         if (!empty($args['element']){
-            return $agatt_settings[$args['parent_element']][$args['element']];
+            $r = $agatt_settings[$args['parent_element']][$args['element']];
         } else {
-            return $agatt_settings[$args['parent_element']];
+            $r = $agatt_settings[$args['parent_element']];
+        }
+        
+        if (empty($r)){
+            return $default;
+        } else {
+            return $r;
         }
     }
 
@@ -189,12 +198,13 @@ class AGATT_Admin {
       $element = $args['element'];
       $type = $args['type'];
       $label = $args['label_for'];
+      $default = $args['default'];
       switch ($type) {
           case 'checkbox':
             #stuff
             break;
           case: 'text':
-            echo "<input type='text' name='agatt-settings[".$parent_element."][".$element."]' value='".esc_attr(self::agatt_setting($args))."' /> <label for='agatt-settings[".$parent_element."][".$element."]'>" . $label . "</label>";
+            echo "<input type='text' name='agatt-settings[".$parent_element."][".$element."]' value='".esc_attr(self::agatt_setting($args, $default))."' /> <label for='agatt-settings[".$parent_element."][".$element."]'>" . $label . "</label>";
             break;
           case: 'repeating_text':
             #stuff
