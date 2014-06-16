@@ -95,15 +95,22 @@ class AGATT_Admin {
     public function agatt_option_generator($args){
 
       # Once we're sure that we've enforced singleton, we'll take care of it that way.
-      if (empty($settings))
+      if (empty($settings)){
         $settings = get_option( $this->option_name, array() );
-
+      }
+        
       $parent_element = $args['parent_element'];
       $element = $args['element'];
       $type = $args['type'];
       $label = $args['label_for'];
-
-      echo "<input type='text' name='agatt-settings[]' value='".esc_attr($settings[])."' />";
+      switch ($type) {
+          case 'checkbox':
+            #stuff
+            break;
+          case: 'text':
+            echo "<input type='text' name='agatt-settings[][]' value='".esc_attr($settings[])."' />";
+            break;
+          
     }
 
     public function agatt_user_set_js_variables(){
