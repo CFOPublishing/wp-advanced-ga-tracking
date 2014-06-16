@@ -29,7 +29,7 @@ License: GPL2
 //Set up some constants
 define( 'AGATT_SLUG', 'agatt' );
 define( 'AGATT_TITLE', 'Advanced Google Analytics Tracking' );
-define( 'AGATT_MENU_SLUG', AGATT_ROOT . '-menu' );
+define( 'AGATT_MENU_SLUG', AGATT_SLUG . '-menu' );
 define( 'AGATT_ROOT', dirname(__FILE__) );
 define( 'AGATT_FILE_PATH', AGATT_ROOT . '/' . basename(__FILE__) );
 define( 'AGATT_URL', plugins_url('/', __FILE__) );
@@ -130,10 +130,11 @@ class Advanced_Google_Analytics_Tracking {
         #Should we be minifying the output via https://github.com/tedious/JShrink instead?
       ?>jQuery(window).load(function() {<?php
       foreach ($args as $event){
+        ?>
         jQuery('body').on("click", "<?php echo $event['domElement']; ?>", function() {
           self::the_event_tracking($event['category'], $event['action'], $event['label'], 1, false, false);
         });
-
+        <?php
       }
       ?>});<?php
 
@@ -163,7 +164,7 @@ class Advanced_Google_Analytics_Tracking {
  * @since 0.0.1
  */
 function agatt() {
-	return agatt::init();
+	return Advanced_Google_Analytics_Tracking::init();
 }
 
 // Start me up!

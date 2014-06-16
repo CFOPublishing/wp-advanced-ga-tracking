@@ -22,7 +22,7 @@ class AGATT_Admin {
             'tools.php',
             __('Advanced Google Analytics', 'agatt'),
             __('Advanced Google Analytics', 'agatt'),
-            'manage_options'
+            'manage_options',
             AGATT_MENU_SLUG,
             array($this, 'agatt_settings_page')
         );
@@ -161,6 +161,7 @@ class AGATT_Admin {
                                         'Action'            =>  'action',
                                         'Event Label'       =>  'label'
                                     )
+                )
             )
         );
 
@@ -182,7 +183,7 @@ class AGATT_Admin {
     }
 
     public function agatt_goog_analytics_section(){
-      echo 'Set up options for advanced Google Analytics tracking.'
+      echo 'Set up options for advanced Google Analytics tracking.';
     }
     
     public function agatt_setting($args, $default = ''){
@@ -190,7 +191,7 @@ class AGATT_Admin {
           if (empty($agatt_settings)){
             $agatt_settings = get_option( $this->option_name, array() );
           }
-        if (!empty($args['element']){
+        if (!empty($args['element'])){
             $r = $agatt_settings[$args['parent_element']][$args['element']];
         } else {
             $r = $agatt_settings[$args['parent_element']];
@@ -221,10 +222,10 @@ class AGATT_Admin {
             }
             echo '<input type="checkbox" name="agatt-settings['.$parent_element.']['.$element.']" value="true" '.$mark.' />  <label for="agatt-settings['.$parent_element.']['.$element.']">' . $label . '</label>';
             break;
-          case: 'text':
+          case 'text':
             echo "<input type='text' name='agatt-settings[".$parent_element."][".$element."]' value='".esc_attr(self::agatt_setting($args, $default))."' /> <label for='agatt-settings[".$parent_element."][".$element."]'>" . $label . "</label>";
             break;
-          case: 'repeating_text':
+          case 'repeating_text':
             $fields = $args['fields'];
             $c = 0;
             $group = self::agatt_setting($args, $default);
@@ -247,8 +248,9 @@ class AGATT_Admin {
                     </li>
                 <?php
                 $c++;
-                ?>
+                
                 }
+                ?>
             </ul>
             <?php
             break;

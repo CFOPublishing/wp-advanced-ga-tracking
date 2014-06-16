@@ -13,7 +13,7 @@ class AGATT_HeadReady {
           if (empty($agatt_settings)){
             $agatt_settings = get_option( 'agatt_settings', array() );
           }
-        if (!empty($args['element']){
+        if (!empty($args['element'])){
             return $agatt_settings[$args['parent_element']][$args['element']];
         } else {
             return $agatt_settings[$args['parent_element']];
