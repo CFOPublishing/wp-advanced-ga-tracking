@@ -37,6 +37,9 @@ define( 'AGATT_VERSION', '0.0.1' );
 
 class Advanced_Google_Analytics_Tracking {
 
+    var $admin;
+    var $headready;
+    
     public static function init() {
 		static $instance;
 
@@ -49,6 +52,8 @@ class Advanced_Google_Analytics_Tracking {
 
 	// See http://php.net/manual/en/language.oop5.decon.php to get a better understanding of what's going on here.
 	private function __construct() {
+        
+        $this->includes();
         add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts' ) );
     }
 
@@ -59,6 +64,7 @@ class Advanced_Google_Analytics_Tracking {
 	 */
 	function includes() {
        require_once( AGATT_ROOT . '/includes/admin.php' );
+       require_once( AGATT_ROOT . '/includes/headready.php' );
     }
 
     /**
@@ -131,6 +137,18 @@ class Advanced_Google_Analytics_Tracking {
       }
       ?>});<?php
 
+    }
+    
+    function set_up_admin(){
+        if ( empty( $this->admin ) ){
+            $this->admin = new AGATT_Admin;
+        }
+    }
+    
+    function set_up_headready(){
+        if ( empty( $this->headready ) ){
+            $this->headready = new AGATT_HeadReady;
+        }
     }
 
 }
