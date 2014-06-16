@@ -39,7 +39,14 @@ class AGATT_Admin {
             __('Activate scroll tracking', 'agatt'),
             array($this, 'agatt_scroll_tracking'),
             AGATT_MENU_SLUG,
-            'agatt-goog-analytics'
+            'agatt-goog-analytics',
+            array(
+
+              'parent-element'   =>  'scrolldepth', 
+              'element'          =>  'scroll_tracking_check',
+              'type'             =>  'checkbox'
+
+            )
         );
         # http://code.tutsplus.com/tutorials/create-a-settings-page-for-your-wordpress-theme--wp-20091
         add_settings_field(
@@ -47,12 +54,13 @@ class AGATT_Admin {
             __('List elements for click tracking', 'agatt'),
             array($this, 'agatt_elements_to_track'),
             AGATT_MENU_SLUG,
-            'agatt-goog-analytics'
+            'agatt-goog-analytics',
+            array()
         );
 
     }
 
-    function my_options_page() {
+    public function agatt_options_page() {
       # Methodology: http://kovshenin.com/2012/the-wordpress-settings-api/
       ?>
       <div class="wrap">
@@ -64,6 +72,15 @@ class AGATT_Admin {
           </form>
       </div>
       <?php
+    }
+
+    public function agatt_goog_analytics_section(){
+      echo 'Set up options for advanced Google Analytics tracking.'
+    }
+
+    public function agatt_scroll_tracking(){
+      $settings = get_option( 'agatt-settings' );
+      echo "<input type='text' name='agatt-settings[]' value='".esc_attr($settings[])."' />";
     }
 
     public function agatt_user_set_js_variables(){
