@@ -103,7 +103,7 @@ class Advanced_Google_Analytics_Tracking {
 
         $ga_js = get_option(AGATT_SLUG.'_google_analytics_js', array());
         $ga_js_a = array($ga_js);
-        $deps = array('jquery');
+        $deps = array('jquery'); 
         $deps_merged = array_merge($deps, $ga_js_a);
 
         if (true == SCRIPT_DEBUG){
@@ -111,13 +111,17 @@ class Advanced_Google_Analytics_Tracking {
         } else {
             wp_register_script(AGATT_SLUG . '-scrolldepth', AGATT_SLUG . 'library/jquery-scrolldepth/jquery.scrolldepth.min.js' , $deps_merged);
         }
-
-        wp_enqueue_script(AGATT_SLUG . '-scrolldepth');
+        #Replace this with a singleton call later.
+        $agatt_settings = get_option( 'agatt_settings', array() );
+        
+        if ('yes' == $agatt_settings['scrolldepth']['scroll_tracking_check']){
+            wp_enqueue_script(AGATT_SLUG . '-scrolldepth');
+        }
 
     }
 
     public function create_basic_jquery_ga_click_events($args){
-
+        #Should we be minifying the output via https://github.com/tedious/JShrink instead?
       ?>jQuery(window).load(function() {<?php
       foreach ($args as $event){
         jQuery('body').on("click", "<?php echo $event['domElement'] ?>", function() {
