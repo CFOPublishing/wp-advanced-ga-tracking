@@ -11,6 +11,8 @@ class AGATT_Admin {
         add_action( 'admin_init', array($this, 'agatt_settings_page_init'));
     }
 
+    #Notes http://wordpress.stackexchange.com/questions/100023/settings-api-with-arrays-example
+
     /**
 	 * Register menu pages
 	 */
@@ -48,7 +50,8 @@ class AGATT_Admin {
 
               'parent-element'   =>  'scrolldepth',
               'element'          =>  'scroll_tracking_check',
-              'type'             =>  'checkbox'
+              'type'             =>  'checkbox',
+              'label_for'        =>  'Turn on scroll tracking'
 
             )
         );
@@ -62,7 +65,8 @@ class AGATT_Admin {
             array(
               'parent-element'  =>  'click_tracker',
               'element'         =>  'track_these_elements',
-              'type'            =>  'repeating_text'
+              'type'            =>  'repeating_text',
+              'label_for'       =>  'List tracked elements.'
             )
         );
 
@@ -87,6 +91,7 @@ class AGATT_Admin {
       echo 'Set up options for advanced Google Analytics tracking.'
     }
 
+    # Method from http://wordpress.stackexchange.com/questions/21256/how-to-pass-arguments-from-add-settings-field-to-the-callback-function
     public function agatt_option_generator($args){
 
       # Once we're sure that we've enforced singleton, we'll take care of it that way.
@@ -96,6 +101,7 @@ class AGATT_Admin {
       $parent_element = $args['parent_element'];
       $element = $args['element'];
       $type = $args['type'];
+      $label = $args['label_for'];
 
       echo "<input type='text' name='agatt-settings[]' value='".esc_attr($settings[])."' />";
     }
