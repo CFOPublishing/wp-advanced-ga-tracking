@@ -2,7 +2,11 @@
 
 class AGATT_Admin {
 
+    var $option_name;
+
     function __construct(){
+
+        $this->option_name = 'agatt_settings';
         add_action( 'admin_menu', array( $this, 'register_agatt_custom_menu_pages' ) );
         add_action( 'admin_init', array($this, 'agatt_settings_page_init'));
     }
@@ -25,7 +29,7 @@ class AGATT_Admin {
 
     public function agatt_settings_page_init(){
 
-        register_setting( 'agatt-group', 'agatt-settings' );
+        register_setting( 'agatt-group', $this->option_name );
 
         add_settings_section(
             'agatt-goog-analytics',
@@ -37,12 +41,12 @@ class AGATT_Admin {
         add_settings_field(
             'agatt-goog-analytics-scroll',
             __('Activate scroll tracking', 'agatt'),
-            array($this, 'agatt_scroll_tracking'),
+            array($this, 'agatt_option_generator'),
             AGATT_MENU_SLUG,
             'agatt-goog-analytics',
             array(
 
-              'parent-element'   =>  'scrolldepth', 
+              'parent-element'   =>  'scrolldepth',
               'element'          =>  'scroll_tracking_check',
               'type'             =>  'checkbox'
 
@@ -52,10 +56,14 @@ class AGATT_Admin {
         add_settings_field(
             'agatt-goog-analytics-events',
             __('List elements for click tracking', 'agatt'),
-            array($this, 'agatt_elements_to_track'),
+            array($this, 'agatt_option_generator'),
             AGATT_MENU_SLUG,
             'agatt-goog-analytics',
-            array()
+            array(
+              'parent-element'  =>  'click_tracker',
+              'element'         =>  'track_these_elements',
+              'type'            =>  'repeating_text'
+            )
         );
 
     }
@@ -67,7 +75,8 @@ class AGATT_Admin {
           <h2>Advanced Google Analytics Tracking</h2>
           <form action="options.php" method="POST">
               <?php settings_fields( 'agatt-group' ); ?>
-              <?php do_settings_sections( 'agatt-settings' ); ?>
+              <?php $settings = get_option( $this->option_name, array() ); ?>
+              <?php do_settings_sections( $this->option_name ); ?>
               <?php submit_button(); ?>
           </form>
       </div>
@@ -78,8 +87,16 @@ class AGATT_Admin {
       echo 'Set up options for advanced Google Analytics tracking.'
     }
 
-    public function agatt_scroll_tracking(){
-      $settings = get_option( 'agatt-settings' );
+    public function agatt_option_generator($args){
+
+      # Once we're sure that we've enforced singleton, we'll take care of it that way.
+      if (empty($settings))
+        $settings = get_option( $this->option_name, array() );
+
+      $parent_element = $args['parent_element'];
+      $element = $args['element'];
+      $type = $args['type'];
+
       echo "<input type='text' name='agatt-settings[]' value='".esc_attr($settings[])."' />";
     }
 
