@@ -224,10 +224,10 @@ class AGATT_Admin {
             } else {
                 $mark = '';
             }
-            echo '<input type="checkbox" name="agatt-settings['.$parent_element.']['.$element.']" value="true" '.$mark.' />  <label for="agatt-settings['.$parent_element.']['.$element.']">' . $label . '</label>';
+            echo '<input type="checkbox" name="agatt-settings['.$parent_element.']['.$element.']" value="true" '.$mark.' class="'.$args['parent_element'].' '.$args['element'].'" />  <label for="agatt-settings['.$parent_element.']['.$element.']" class="'.$args['parent_element'].' '.$args['element'].'" >' . $label . '</label>';
             break;
           case 'text':
-            echo "<input type='text' name='agatt-settings[".$parent_element."][".$element."]' value='".esc_attr(self::agatt_setting($args, $default))."' /> <label for='agatt-settings[".$parent_element."][".$element."]'>" . $label . "</label>";
+            echo "<input type='text' name='agatt-settings[".$parent_element."][".$element."]' value='".esc_attr(self::agatt_setting($args, $default))."' class='".$args['parent_element']." ".$args['element']."' /> <label for='agatt-settings[".$parent_element."][".$element."]' class='".$args['parent_element']." ".$args['element']."' >" . $label . "</label>";
             break;
           case 'repeating_text':
             $fields = $args['fields'];
@@ -239,7 +239,7 @@ class AGATT_Admin {
                 <?php foreach ($group as $event){ 
                     if ($c > 0) { $id_c = '-'.$c; } else { $id_c = ''; }
                 ?>
-                    <li class="repeat-element repeat-element-<?php echo $element; ?>" id="repeat-element-<?php echo $element; echo $id_c; ?>">
+                    <li class="repeat-element repeat-element-<?php echo $element; echo ' '; echo $element; echo ' '; echo $parent_element; ?> " id="repeat-element-<?php echo $element; echo $id_c; ?>">
                         
                         <?php
 
