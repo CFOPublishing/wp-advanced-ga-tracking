@@ -36,7 +36,7 @@ var elementCounter = 1;
             elementCounter++;
             jQuery("#counter-for-"+elementID).val(elementCounter);
                  
-            jQuery("#"+parentID).append(elementRow);
+            jQuery("#"+parentID+' .add-repeater').before(elementRow);
             
                 
             return false;

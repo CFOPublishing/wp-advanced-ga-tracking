@@ -250,7 +250,7 @@ class AGATT_Admin {
 
                             }
                         ?>
-                        <a class="repeat-element-remover" href="#">Remove</a>
+                        <a class="repeat-element-remover" href="#">Remove</a><br /><br />
                     </li>
                 <?php
                 $c++;
