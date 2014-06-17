@@ -244,7 +244,7 @@ class AGATT_Admin {
                         <?php
 
                             foreach ($fields as $f_label => $field){
-                                echo '<input type="text" name="agatt-settings['.$parent_element.']['.$element.']['.$c.']['.$field.']" value="'.esc_attr($event[$field]).'" /> <label for="agatt-settings['.$parent_element.']['.$element.']['.$c.']['.$field.']">' . $f_label . '</label>';
+                                echo '<input type="text" name="agatt-settings['.$parent_element.']['.$element.']['.$c.']['.$field.']" value="'.esc_attr($event[$field]).'" /> <label for="agatt-settings['.$parent_element.']['.$element.']['.$c.']['.$field.']">' . $f_label . '</label><br />';
 
                             }
                         ?>
