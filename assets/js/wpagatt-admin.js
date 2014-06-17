@@ -1,13 +1,13 @@
 var elementCounter = 0;
     jQuery(document).ready(function() {           
         jQuery(".add-repeater").click(function() {
-            var parent  =   this.parent('.repeater-container');
+            var parent  =   jQuery(this).parent('.repeater-container');
             var parentID =  parent.attr('id');
             var elementID = parent.attr('for');
             var elementRow = jQuery(parentID + " #" + elementID).clone();
-            var newId = elementID+ "-" + elementCounter;
-                
-            elementRow.attr("id", newId);
+            var newID = elementID + "-" + elementCounter;
+            console.log(elementRow);    
+            elementRow.attr("id", newID);
             elementRow.show();
             
             
@@ -20,7 +20,7 @@ var elementCounter = 0;
                 var input_string = stringStarts + "element-num-" + elementCounter +"]"+stringEnds_complete;
                 this.attr("name", input_string); 
                  
-            }
+            });
                                                 
             jQuery('#' + newID + ' label').each(function (index) {
                 
@@ -31,12 +31,13 @@ var elementCounter = 0;
                 var input_string = stringStarts + "element-num-" + elementCounter +"]"+stringEnds_complete;
                 this.attr("for", input_string); 
                  
-            }
+            });
  
             elementCounter++;
             jQuery("#counter-for-"+elementID).val(elementCounter);
                  
             jQuery("#"+parentID).append(elementRow);
+            
                 
             return false;
         });         

@@ -149,7 +149,7 @@ class AGATT_Admin {
               'parent_element'  =>  'click_tracker',
               'element'         =>  'track_these_elements',
               'type'            =>  'repeating_text',
-              'label_for'       =>  'List tracked elements.',
+              'label_for'       =>  '<a href="https://developers.google.com/analytics/devguides/collection/gajs/eventTrackerGuide" target="_blank">Read more about event tracking.</a>.',
               'default'         =>  array(0 => array(
                                         'domElement' => 'body',
                                         'category'   => 'primary_elements',
@@ -178,6 +178,7 @@ class AGATT_Admin {
               <?php do_settings_sections( AGATT_MENU_SLUG ); ?>
               <?php submit_button(); ?>
           </form>
+          <a href="https://developers.google.com/analytics/devguides/collection/gajs/eventTrackerGuide" target="_blank">Read more about event tracking.</a>.
       </div>
       <?php
     }
