@@ -31,7 +31,7 @@ class AGATT_Admin {
 
     public function agatt_settings_page_init(){
 
-        register_setting( 'agatt-group', $this->option_name, array($this, 'agatt-validator') );
+        register_setting( 'agatt-group', $this->option_name, array($this, 'agatt_validator') );
 
         add_settings_section(
             'agatt-goog-analytics',
@@ -275,6 +275,11 @@ class AGATT_Admin {
             wp_enqueue_script(AGATT_SLUG.'-admin');    
         }
         
+    }
+    
+    public function agatt_validator($input){
+        #var_dump($input); die();    
+        return $input;
     }
 
 }
