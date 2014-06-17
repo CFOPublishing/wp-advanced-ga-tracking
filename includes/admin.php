@@ -30,7 +30,7 @@ class AGATT_Admin {
 
     public function agatt_settings_page_init(){
 
-        register_setting( 'agatt-group', $this->option_name );
+        register_setting( 'agatt-group', $this->option_name, array($this, 'agatt-validator') );
 
         add_settings_section(
             'agatt-goog-analytics',
@@ -47,7 +47,7 @@ class AGATT_Admin {
             'agatt-goog-analytics',
             array(
 
-              'parent-element'   =>  'scrolldepth',
+              'parent_element'   =>  'scrolldepth',
               'element'          =>  'scroll_tracking_check',
               'type'             =>  'checkbox',
               'label_for'        =>  'Turn on scroll tracking. <a href="http://scrolldepth.parsnip.io/" target="_blank">Learn more.</a>',
@@ -56,14 +56,14 @@ class AGATT_Admin {
             )
         );
         add_settings_field(
-            'agatt-goog-analytics-scroll',
+            'agatt-goog-analytics-scroll-scrolledelements',
             __('Comma seperated list of elements to for scrolldepth to check', 'agatt'),
             array($this, 'agatt_option_generator'),
             AGATT_MENU_SLUG,
             'agatt-goog-analytics',
             array(
 
-              'parent-element'   =>  'scrolldepth',
+              'parent_element'   =>  'scrolldepth',
               'element'          =>  'scrolledElements',
               'type'             =>  'text',
               'label_for'        =>  'Scrolling past these items will trigger an event.',
@@ -73,14 +73,14 @@ class AGATT_Admin {
             )
         );
         add_settings_field(
-            'agatt-goog-analytics-scroll',
+            'agatt-goog-analytics-scroll-minheight',
             __('Minimum Height', 'agatt'),
             array($this, 'agatt_option_generator'),
             AGATT_MENU_SLUG,
             'agatt-goog-analytics',
             array(
 
-              'parent-element'   =>  'scrolldepth',
+              'parent_element'   =>  'scrolldepth',
               'element'          =>  'minHeight',
               'type'             =>  'text',
               'label_for'        =>  'Minimum height',
@@ -89,14 +89,14 @@ class AGATT_Admin {
             )
         );
         add_settings_field(
-            'agatt-goog-analytics-scroll',
+            'agatt-goog-analytics-scroll-percentage',
             __('Percentage check', 'agatt'),
             array($this, 'agatt_option_generator'),
             AGATT_MENU_SLUG,
             'agatt-goog-analytics',
             array(
 
-              'parent-element'   =>  'scrolldepth',
+              'parent_element'   =>  'scrolldepth',
               'element'          =>  'percentage',
               'type'             =>  'checkbox',
               'label_for'        =>  'Deactivate to only track scrolling to elements listed above.',
@@ -105,14 +105,14 @@ class AGATT_Admin {
             )
         );
         add_settings_field(
-            'agatt-goog-analytics-scroll',
+            'agatt-goog-analytics-scroll-usertiming',
             __('User Timing', 'agatt'),
             array($this, 'agatt_option_generator'),
             AGATT_MENU_SLUG,
             'agatt-goog-analytics',
             array(
 
-              'parent-element'   =>  'scrolldepth',
+              'parent_element'   =>  'scrolldepth',
               'element'          =>  'userTiming',
               'type'             =>  'checkbox',
               'label_for'        =>  'Turn on scroll tracking',
@@ -121,30 +121,31 @@ class AGATT_Admin {
             )
         );    
         add_settings_field(
-            'agatt-goog-analytics-scroll',
+            'agatt-goog-analytics-scroll-pixel_depth',
             __('Pixel Depth', 'agatt'),
             array($this, 'agatt_option_generator'),
             AGATT_MENU_SLUG,
             'agatt-goog-analytics',
             array(
 
-              'parent-element'   =>  'scrolldepth',
+              'parent_element'   =>  'scrolldepth',
               'element'          =>  'pixel_Depth',
               'type'             =>  'checkbox',
               'label_for'        =>  'Pixel Depth events',
               'default'          =>  'true'
 
             )
-        );            
+        ); 
+        
         # http://code.tutsplus.com/tutorials/create-a-settings-page-for-your-wordpress-theme--wp-20091
         add_settings_field(
             'agatt-goog-analytics-events',
-            __('User Timing', 'agatt'),
+            __('Event Tracking', 'agatt'),
             array($this, 'agatt_option_generator'),
             AGATT_MENU_SLUG,
             'agatt-goog-analytics',
             array(
-              'parent-element'  =>  'click_tracker',
+              'parent_element'  =>  'click_tracker',
               'element'         =>  'track_these_elements',
               'type'            =>  'repeating_text',
               'label_for'       =>  'List tracked elements.',
@@ -153,14 +154,13 @@ class AGATT_Admin {
                                         'category'   => 'primary_elements',
                                         'action'     => 'click',
                                         'label'      => 'Body Click'
-                                    ),
+                                    )),
               'fields'          =>  array(
                                         'DOM Element'       =>  'domElement',
                                         'Object Group Name' =>  'category',
                                         'Action'            =>  'action',
                                         'Event Label'       =>  'label'
                                     )
-                )
             )
         );
 
@@ -174,7 +174,7 @@ class AGATT_Admin {
           <form action="options.php" method="POST">
               <?php settings_fields( 'agatt-group' ); ?>
               <?php $agatt_settings = get_option( $this->option_name, array() ); ?>
-              <?php do_settings_sections( $this->option_name ); ?>
+              <?php do_settings_sections( AGATT_MENU_SLUG ); ?>
               <?php submit_button(); ?>
           </form>
       </div>
@@ -185,18 +185,23 @@ class AGATT_Admin {
       echo 'Set up options for advanced Google Analytics tracking.';
     }
     
-    public function agatt_setting($args, $default = ''){
+    public function agatt_setting($args, $default = array()){
           # Once we're sure that we've enforced singleton, we'll take care of it that way.
           if (empty($agatt_settings)){
             $agatt_settings = get_option( $this->option_name, array() );
           }
-        if (!empty($args['element'])){
+        if (empty($agatt_settings)) {
+        
+            
+        
+        } elseif (!empty($args['element'])){
             $r = $agatt_settings[$args['parent_element']][$args['element']];
         } else {
             $r = $agatt_settings[$args['parent_element']];
         }
         
         if (empty($r)){
+            #$default = array($args['parent_element'] => array($args['element'] => ''));
             return $default;
         } else {
             return $r;
@@ -205,7 +210,7 @@ class AGATT_Admin {
 
     # Method from http://wordpress.stackexchange.com/questions/21256/how-to-pass-arguments-from-add-settings-field-to-the-callback-function
     public function agatt_option_generator($args){
-        
+       #echo '<pre>'; var_dump($args); echo '</pre>';  return;
       $parent_element = $args['parent_element'];
       $element = $args['element'];
       $type = $args['type'];
