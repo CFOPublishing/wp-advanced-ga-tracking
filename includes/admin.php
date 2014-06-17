@@ -9,6 +9,7 @@ class AGATT_Admin {
         $this->option_name = 'agatt_settings';
         add_action( 'admin_menu', array( $this, 'register_agatt_custom_menu_pages' ) );
         add_action( 'admin_init', array($this, 'agatt_settings_page_init'));
+        add_action( 'admin_enqueue_scripts', array( $this, 'add_admin_scripts' ) );
     }
 
     #Notes http://wordpress.stackexchange.com/questions/100023/settings-api-with-arrays-example
@@ -140,7 +141,7 @@ class AGATT_Admin {
         # http://code.tutsplus.com/tutorials/create-a-settings-page-for-your-wordpress-theme--wp-20091
         add_settings_field(
             'agatt-goog-analytics-events',
-            __('Event Tracking', 'agatt'),
+            __('Click Event Tracking', 'agatt'),
             array($this, 'agatt_option_generator'),
             AGATT_MENU_SLUG,
             'agatt-goog-analytics',
@@ -256,11 +257,23 @@ class AGATT_Admin {
                 }
 				echo '<input type="hidden" id="counter-for-repeat-element-'.$parent_element.'-'.$element.'" name="element-max-id-'.$parent_element.'-'.$element.'" value="'.$c.'">';
                 ?>
+				<a href="#" class="add-repeater">Track another click event.</a>  
             </ul>
             <?php
             break;
       }
           
+    }
+    
+    public function add_admin_scripts($hook){
+        global $pagenow;
+        
+        wp_register_script(AGATT_SLUG . '-admin', AGATT_URL . 'assets/js/wpagatt-admin.js' , array( 'jquery' ));
+		
+        if ('tools_page_agatt-menu' == $hook){
+            wp_enqueue_script(AGATT_SLUG.'-admin');    
+        }
+        
     }
 
 }

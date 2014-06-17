@@ -1,7 +1,7 @@
 var elementCounter = 0;
     jQuery(document).ready(function() {           
-        jQuery(".add-repeated-text").click(function() {
-            var parent  =   jQuery(this).parent('.repeater-container');
+        jQuery(".add-repeater").click(function() {
+            var parent  =   this.parent('.repeater-container');
             var parentID =  parent.attr('id');
             var elementID = parent.attr('for');
             var elementRow = jQuery(parentID + " #" + elementID).clone();
