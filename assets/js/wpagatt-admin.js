@@ -6,7 +6,7 @@ var elementCounter = 1;
             var elementID = parent.attr('for');
             var elementRow = jQuery('#'+parentID + " #" + elementID).clone();
             var newID = elementID + "-" + elementCounter;
-            console.log(elementRow);    
+            //console.log(elementRow);    
             elementRow.attr("id", newID);
             elementRow.show();
             
@@ -19,6 +19,7 @@ var elementCounter = 1;
                 var input_stringEnds_complete = "["+input_stringEnds+"]";
                 var input_string = input_stringStarts + "element-num-" + elementCounter +"]"+input_stringEnds_complete;
                 jQuery(this).attr("name", input_string); 
+                jQuery(this).attr("value", '');
                  
             });
                                                 
@@ -40,5 +41,13 @@ var elementCounter = 1;
             
                 
             return false;
-        });         
+        }); 
+        
+        
+        jQuery(".repeat-element-remover").click(function() {
+            var parentID  =   jQuery(this).parent('li').attr('id');
+            jQuery('#'+parentID).remove();
+             return false;
+        });
+        
     });
