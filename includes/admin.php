@@ -18,8 +18,7 @@ class AGATT_Admin {
 	 */
 	function register_agatt_custom_menu_pages() {
 
-        add_submenu_page(
-            'tools.php',
+        add_management_page(
             __('Advanced Google Analytics', 'agatt'),
             __('Advanced Google Analytics', 'agatt'),
             'manage_options',
@@ -167,7 +166,7 @@ class AGATT_Admin {
 
     }
 
-    public function agatt_options_page() {
+    public function agatt_settings_page() {
       # Methodology: http://kovshenin.com/2012/the-wordpress-settings-api/
       ?>
       <div class="wrap">

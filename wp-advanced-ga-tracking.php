@@ -55,6 +55,9 @@ class Advanced_Google_Analytics_Tracking {
         
         $this->includes();
         add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts' ) );
+        
+        $this->set_up_admin();
+        $this->set_up_headready();
     }
 
 	/**
