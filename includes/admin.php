@@ -235,16 +235,16 @@ class AGATT_Admin {
             $group = self::agatt_setting($args, $default);
             ?>
             <h3 class="agatt-event">Events to track:</h3>
-            <ul>
+            <ul class="repeater-container" for="repeat-element-<?php echo $parent_element; ?>-<?php echo $element; ?>" id="repeater-<?php echo $parent_element; echo '-'; echo $element; ?>">
                 <?php foreach ($group as $event){ 
                     if ($c > 0) { $id_c = '-'.$c; } else { $id_c = ''; }
                 ?>
-                    <li class="repeat-element repeat-element-<?php echo $element; echo ' '; echo $element; echo ' '; echo $parent_element; ?> " id="repeat-element-<?php echo $element; echo $id_c; ?>">
+                    <li class="repeat-element repeat-element-<?php echo $element; echo ' '; echo $element; echo ' '; echo $parent_element; ?> " id="repeat-element-<?php echo $parent_element.'-'.$element . $id_c; ?>">
                         
                         <?php
 
                             foreach ($fields as $f_label => $field){
-                                echo '<input type="text" name="agatt-settings['.$parent_element.']['.$element.']['.$c.']['.$field.']" value="'.esc_attr($event[$field]).'" /> <label for="agatt-settings['.$parent_element.']['.$element.']['.$c.']['.$field.']">' . $f_label . '</label><br />';
+                                echo '<input class="'.$field.'" type="text" name="agatt-settings['.$parent_element.']['.$element.'][element-num-'.$c.']['.$field.']" value="'.esc_attr($event[$field]).'" /> <label class="'.$field.'" for="agatt-settings['.$parent_element.']['.$element.'][element-num-'.$c.']['.$field.']">' . $f_label . '</label><br />';
 
                             }
                         ?>
@@ -254,6 +254,7 @@ class AGATT_Admin {
                 $c++;
                 
                 }
+				echo '<input type="hidden" id="counter-for-repeat-element-'.$parent_element.'-'.$element.'" name="element-max-id-'.$parent_element.'-'.$element.'" value="'.$c.'">';
                 ?>
             </ul>
             <?php
