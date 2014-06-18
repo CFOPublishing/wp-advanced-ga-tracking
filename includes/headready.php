@@ -34,34 +34,36 @@ class AGATT_HeadReady {
 
 
     public function agatt_user_set_js_variables(){
-
-        ?>
-        <script type="text/javascript">
-            var agatt_scrolledElements = [];
-            <?php
-                if (!empty($user_set_scrolledElements)){
-                    ?>
-                    agatt_scrolledElements = [<?php echo $user_set_scrolledElements; ?>];
-                    <?php
-                }
+        $scrollset = self::agatt_setting(array('parent_element' => 'scrolldepth'));
+        if ('true' == $scrollset['scroll_tracking_check']) {
             ?>
-            var agatt_sd_minHeight = 0;
-            var agatt_sd_percentage = true;
-            var agatt_sd_userTiming = true;
-            var agatt_sd_pixel_Depth = true;
-            jQuery(document).ready(function( $ ) {
+            <script type="text/javascript">
+                var agatt_scrolledElements = [];
+                <?php
+                    if (!empty($user_set_scrolledElements)){
+                        ?>
+                        agatt_scrolledElements = [<?php echo $user_set_scrolledElements; ?>];
+                        <?php
+                    }
+                ?>
+                var agatt_sd_minHeight = 0;
+                var agatt_sd_percentage = true;
+                var agatt_sd_userTiming = true;
+                var agatt_sd_pixel_Depth = true;
+                jQuery(document).ready(function( $ ) {
 
-                $.scrollDepth({
-                  minHeight: agatt_sd_minHeight,
-                  elements: agatt_scrolledElements,
-                  percentage: agatt_sd_percentage,
-                  userTiming: agatt_sd_userTiming,
-                  pixelDepth: agatt_sd_pixel_Depth
+                    $.scrollDepth({
+                      minHeight: agatt_sd_minHeight,
+                      elements: agatt_scrolledElements,
+                      percentage: agatt_sd_percentage,
+                      userTiming: agatt_sd_userTiming,
+                      pixelDepth: agatt_sd_pixel_Depth
+                    });
+
                 });
-
-            });
-        </script>
-        <?php
+            </script>
+            <?php
+        }
     }
     
     public function gen_click_tracks(){
