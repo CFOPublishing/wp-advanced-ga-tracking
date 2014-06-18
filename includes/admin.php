@@ -226,10 +226,10 @@ class AGATT_Admin {
             } else {
                 $mark = '';
             }
-            echo '<input type="checkbox" name="agatt-settings['.$parent_element.']['.$element.']" value="true" '.$mark.' class="'.$args['parent_element'].' '.$args['element'].'" />  <label for="agatt-settings['.$parent_element.']['.$element.']" class="'.$args['parent_element'].' '.$args['element'].'" >' . $label . '</label>';
+            echo '<input type="checkbox" name="agatt_settings['.$parent_element.']['.$element.']" value="true" '.$mark.' class="'.$args['parent_element'].' '.$args['element'].'" />  <label for="agatt_settings['.$parent_element.']['.$element.']" class="'.$args['parent_element'].' '.$args['element'].'" >' . $label . '</label>';
             break;
           case 'text':
-            echo "<input type='text' name='agatt-settings[".$parent_element."][".$element."]' value='".esc_attr(self::agatt_setting($args, $default))."' class='".$args['parent_element']." ".$args['element']."' /> <label for='agatt-settings[".$parent_element."][".$element."]' class='".$args['parent_element']." ".$args['element']."' >" . $label . "</label>";
+            echo "<input type='text' name='agatt_settings[".$parent_element."][".$element."]' value='".esc_attr(self::agatt_setting($args, $default))."' class='".$args['parent_element']." ".$args['element']."' /> <label for='agatt_settings[".$parent_element."][".$element."]' class='".$args['parent_element']." ".$args['element']."' >" . $label . "</label>";
             break;
           case 'repeating_text':
             $fields = $args['fields'];
@@ -246,7 +246,7 @@ class AGATT_Admin {
                         <?php
 
                             foreach ($fields as $f_label => $field){
-                                echo '<input class="'.$field.'" type="text" name="agatt-settings['.$parent_element.']['.$element.'][element-num-'.$c.']['.$field.']" value="'.esc_attr($event[$field]).'" /> <label class="'.$field.'" for="agatt-settings['.$parent_element.']['.$element.'][element-num-'.$c.']['.$field.']">' . $f_label . '</label><br />';
+                                echo '<input class="'.$field.'" type="text" name="agatt_settings['.$parent_element.']['.$element.'][element-num-'.$c.']['.$field.']" value="'.esc_attr($event[$field]).'" /> <label class="'.$field.'" for="agatt_settings['.$parent_element.']['.$element.'][element-num-'.$c.']['.$field.']">' . $f_label . '</label><br />';
 
                             }
                         ?>
@@ -278,6 +278,7 @@ class AGATT_Admin {
     }
     
     public function agatt_validator($input){
+        $output = get_option( $this->option_name );
         #var_dump($input); die();    
         return $input;
     }
