@@ -6,8 +6,8 @@ class AGATT_HeadReady {
         add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts' ));
         add_filter('print_scripts_array', array($this, 'filter_script_order')); 
 
-        add_action( 'wp_head', array( $this, 'agatt_user_set_js_variables' ), 20 );
-        add_action( 'wp_head', array( $this, 'gen_click_tracks' ), 20 );        
+        add_action( 'wp_head', array( $this, 'agatt_user_set_js_variables' ), 99999 );
+        add_action( 'wp_head', array( $this, 'gen_click_tracks' ), 99999 );        
     }
     
     # Replace calls to this with singleton calls later.
