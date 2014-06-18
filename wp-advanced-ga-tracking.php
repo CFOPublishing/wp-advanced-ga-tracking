@@ -92,9 +92,9 @@ class Advanced_Google_Analytics_Tracking {
         $boolString = ($noninteraction) ? 'true' : 'false';
         $s = sprintf('_gaq.push([%1$s, %2$s, %3$s, %4$s, %5$s, %6$s]);',
             "'_trackEvent'",
-            "'" . get_for_google_analytics($category) . "'",
-            "'" . get_for_google_analytics($action) . "'",
-            "'" . get_for_google_analytics($label) . "'",
+            "'" . self::get_for_google_analytics($category) . "'",
+            "'" . self::get_for_google_analytics($action) . "'",
+            "'" . self::get_for_google_analytics($label) . "'",
             $value,
             $boolString
 
@@ -130,16 +130,21 @@ class Advanced_Google_Analytics_Tracking {
     }
 
     public function create_basic_jquery_ga_click_events($args){
-        #Should we be minifying the output via https://github.com/tedious/JShrink instead?
-      ?>jQuery(window).load(function() {<?php
+      
+      #Should we be minifying the output via https://github.com/tedious/JShrink instead?
+      ?>
+      <script type="text/javascript">
+      jQuery(window).load(function() {<?php
       foreach ($args as $event){
         ?>
         jQuery('body').on("click", "<?php echo $event['domElement']; ?>", function() {
-          self::the_event_tracking($event['category'], $event['action'], $event['label'], 1, false, false);
+          <?php self::the_event_tracking($event['category'], $event['action'], $event['label'], 1, false, false); ?>
         });
         <?php
       }
-      ?>});<?php
+      ?>});
+      </script>    
+      <?php
 
     }
     
