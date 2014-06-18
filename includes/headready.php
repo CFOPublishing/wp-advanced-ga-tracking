@@ -40,18 +40,55 @@ class AGATT_HeadReady {
         if (!empty($scrollset['scroll_tracking_check']) && 'true' == $scrollset['scroll_tracking_check']) {
             ?>
             <script type="text/javascript">
-                var agatt_scrolledElements = [];
+                
                 <?php
-                    if (!empty($user_set_scrolledElements)){
+                    if (!empty($scrollset['scrolledElements'])){
                         ?>
-                        agatt_scrolledElements = [<?php echo $user_set_scrolledElements; ?>];
+                        var agatt_scrolledElements = [<?php echo $scrollset['scrolledElements']; ?>];
                         <?php
+                    } else {
+                        ?>var agatt_scrolledElements = [];<?php
                     }
                 ?>
-                var agatt_sd_minHeight = 0;
-                var agatt_sd_percentage = true;
-                var agatt_sd_userTiming = true;
-                var agatt_sd_pixel_Depth = true;
+
+                <?php
+                    if (!empty($scrollset['minHeight'])){
+                        ?>
+                        var agatt_sd_minHeight = [<?php echo $scrollset['minHeight']; ?>];
+                        <?php
+                    } else {
+                        ?>var agatt_sd_minHeight = 0;<?php
+                    }
+                ?>              
+                
+                <?php
+                    if (!empty($scrollset['percentage'])){
+                        ?>
+                        var agatt_sd_percentage = [<?php echo $scrollset['percentage']; ?>];
+                        <?php
+                    } else {
+                        ?>var agatt_sd_percentage = true;<?php
+                    }
+                ?>                        
+                
+                <?php
+                    if (!empty($scrollset['userTiming'])){
+                        ?>
+                        var agatt_sd_userTiming = [<?php echo $scrollset['userTiming']; ?>];
+                        <?php
+                    } else {
+                        ?>var agatt_sd_userTiming = true;<?php
+                    }
+                ?>                        
+                <?php
+                    if (!empty($scrollset['pixel_Depth'])){
+                        ?>
+                        var agatt_sd_pixel_Depth = [<?php echo $scrollset['pixel_Depth']; ?>];
+                        <?php
+                    } else {
+                        ?>var agatt_sd_pixel_Depth = true;<?php
+                    }
+                ?>                        
                 jQuery(document).ready(function( $ ) {
 
                     $.scrollDepth({
