@@ -114,9 +114,9 @@ class Advanced_Google_Analytics_Tracking {
       jQuery(window).load(function() {<?php
       foreach ($args as $event){
         ?>
-        jQuery('body').on("click", "<?php echo $event['domElement']; ?>", function() {
+jQuery('body').on("click", "<?php echo $event['domElement']; ?>", function() {
           <?php self::the_event_tracking($event['category'], $event['action'], $event['label'], 1, false, false); ?>
-        });
+});
         <?php
       }
       ?>});
