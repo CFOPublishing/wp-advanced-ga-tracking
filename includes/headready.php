@@ -3,9 +3,11 @@
 class AGATT_HeadReady {
 
     function __construct(){
+        add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts' ));
+        add_filter('print_scripts_array', array($this, 'filter_script_order')); 
 
-        add_action( 'wp_head', array( $this, 'agatt_user_set_js_variables' ) );
-        add_action( 'wp_head', array( $this, 'gen_click_tracks' ) );
+        add_action( 'wp_head', array( $this, 'agatt_user_set_js_variables' ), 20 );
+        add_action( 'wp_head', array( $this, 'gen_click_tracks' ), 20 );        
     }
     
     # Replace calls to this with singleton calls later.
@@ -35,7 +37,7 @@ class AGATT_HeadReady {
 
     public function agatt_user_set_js_variables(){
         $scrollset = self::agatt_setting(array('parent_element' => 'scrolldepth'));
-        if ('true' == $scrollset['scroll_tracking_check']) {
+        if (!empty($scrollset['scroll_tracking_check']) && 'true' == $scrollset['scroll_tracking_check']) {
             ?>
             <script type="text/javascript">
                 var agatt_scrolledElements = [];
@@ -69,6 +71,51 @@ class AGATT_HeadReady {
     public function gen_click_tracks(){
         $track_these = self::agatt_setting(array('parent_element' => 'click_tracker', 'element' => 'track_these_elements'));
         agatt()->create_basic_jquery_ga_click_events($track_these);
+    }
+    
+    public function add_scripts($hook){
+        global $pagenow;
+
+        $ga_js = get_option(AGATT_SLUG.'_google_analytics_js', '');
+        $ga_js_a = array($ga_js);
+        $deps = array('jquery'); 
+        $deps_merged = array_merge($deps, $ga_js_a);
+        #var_dump($hook); die();
+            wp_register_script(AGATT_SLUG . '-scrolldepth', AGATT_URL . 'library/jquery-scrolldepth/jquery.scrolldepth.js' , $deps);
+            wp_register_script(AGATT_SLUG . '-scrolldepth-min', AGATT_URL . 'library/jquery-scrolldepth/jquery.scrolldepth.min.js' , $deps);
+        #Replace this with a singleton call later.
+        $agatt_settings = get_option( 'agatt_settings', array() );
+        
+        if (!empty($agatt_settings['scrolldepth']['scroll_tracking_check']) && 'true' == $agatt_settings['scrolldepth']['scroll_tracking_check']){
+                    if (SCRIPT_DEBUG){
+                        wp_enqueue_script(AGATT_SLUG . '-scrolldepth-min');
+                    } else {
+                        wp_enqueue_script(AGATT_SLUG . '-scrolldepth');
+                    }
+        }
+
+    }
+    
+    public function filter_script_order($array){
+        
+        $keys_to_unset = array();
+        $scripts_to_last = array(AGATT_SLUG . '-scrolldepth', AGATT_SLUG . '-scrolldepth-min');
+        foreach($scripts_to_last as $script){
+            $key = array_search($script,$array);
+            if(false != $key){
+                array_push($array, $script);
+                $keys_to_unset[] = $key;
+            }
+        }
+        
+        foreach ($keys_to_unset as $key){
+            if(!empty($key)){
+                unset($array[$key]);
+            }
+        }
+        #var_dump($array); die();
+        return $array;
+        
     }
     
 }
