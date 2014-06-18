@@ -54,7 +54,7 @@ class AGATT_HeadReady {
                 <?php
                     if (!empty($scrollset['minHeight'])){
                         ?>
-                        var agatt_sd_minHeight = [<?php echo $scrollset['minHeight']; ?>];
+                        var agatt_sd_minHeight = <?php echo $scrollset['minHeight']; ?>;
                         <?php
                     } else {
                         ?>var agatt_sd_minHeight = 0;<?php
@@ -64,7 +64,7 @@ class AGATT_HeadReady {
                 <?php
                     if (!empty($scrollset['percentage'])){
                         ?>
-                        var agatt_sd_percentage = [<?php echo $scrollset['percentage']; ?>];
+                        var agatt_sd_percentage = <?php echo $scrollset['percentage']; ?>;
                         <?php
                     } else {
                         ?>var agatt_sd_percentage = true;<?php
@@ -74,7 +74,7 @@ class AGATT_HeadReady {
                 <?php
                     if (!empty($scrollset['userTiming'])){
                         ?>
-                        var agatt_sd_userTiming = [<?php echo $scrollset['userTiming']; ?>];
+                        var agatt_sd_userTiming = <?php echo $scrollset['userTiming']; ?>;
                         <?php
                     } else {
                         ?>var agatt_sd_userTiming = true;<?php
@@ -83,7 +83,7 @@ class AGATT_HeadReady {
                 <?php
                     if (!empty($scrollset['pixel_Depth'])){
                         ?>
-                        var agatt_sd_pixel_Depth = [<?php echo $scrollset['pixel_Depth']; ?>];
+                        var agatt_sd_pixel_Depth = <?php echo $scrollset['pixel_Depth']; ?>;
                         <?php
                     } else {
                         ?>var agatt_sd_pixel_Depth = true;<?php
