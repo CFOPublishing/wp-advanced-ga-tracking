@@ -44,8 +44,9 @@ var elementCounter = 1;
         }); 
         
         
-        jQuery(".repeat-element-remover").click(function() {
+        jQuery('body').on('click', '.repeat-element-remover', function() {
             var parentID  =   jQuery(this).parent('li').attr('id');
+            //alert(parentID);
             jQuery('#'+parentID).remove();
              return false;
         });
