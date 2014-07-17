@@ -247,10 +247,14 @@ class AGATT_Admin {
 
                             foreach ($fields as $f_label => $field){
                                 echo '<input class="'.$field.'" type="text" name="agatt_settings['.$parent_element.']['.$element.'][element-num-'.$c.']['.$field.']" value="'.esc_attr($event[$field]).'" /> <label class="'.$field.'" for="agatt_settings['.$parent_element.']['.$element.'][element-num-'.$c.']['.$field.']">' . $f_label . '</label><br />';
-
                             }
+
+                        if ($c>0){
+                          echo '<a class="repeat-element-remover" href="#">Remove</a><br /><br />';
+                        } else {
+                          echo '<a class="repeat-element-remover" style="display:none;" href="#">Remove</a><br /><br />';
+                        }
                         ?>
-                        <a class="repeat-element-remover" href="#">Remove</a><br /><br />
                     </li>
                 <?php
                 $c++;
