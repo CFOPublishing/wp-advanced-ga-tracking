@@ -138,6 +138,81 @@ class AGATT_Admin {
             )
         );
 
+
+        # http://code.tutsplus.com/tutorials/create-a-settings-page-for-your-wordpress-theme--wp-20091
+        add_settings_field(
+            'agatt-goog-analytics-viewability-events',
+            __('Viewable Area Tracking', 'agatt'),
+            array($this, 'agatt_option_generator'),
+            AGATT_MENU_SLUG,
+            'agatt-goog-analytics',
+            array(
+              'parent_element'  =>  'viewable_tracker',
+              'element'         =>  'track_these_viewable_elements',
+              'type'            =>  'repeating_text_group',
+              'label_for'       =>  '<a href="https://developers.google.com/analytics/devguides/collection/gajs/eventTrackerGuide" target="_blank">Read more about event tracking.</a>.',
+              'default'         =>  array(0 => array(
+                                        'selector' => 'footer',
+                                        'name'   => 'Footer'
+                                    )),
+              'fields'          =>  array(
+                                        'Selected DOM Element'   =>  'selector',
+                                        'Element Name'           =>  'name'
+                                    )
+            )
+        );
+
+        add_settings_field(
+            'agatt-goog-analytics-viewability-interval',
+            __('Report Interval', 'agatt'),
+            array($this, 'agatt_option_generator'),
+            AGATT_MENU_SLUG,
+            'agatt-goog-analytics',
+            array(
+
+              'parent_element'   =>  'viewability',
+              'element'          =>  'reportInterval',
+              'type'             =>  'text',
+              'label_for'        =>  'Interval or seconds to track for viewability events (every X seconds, send an event)',
+              'default'          =>  15
+
+            )
+        );
+
+        add_settings_field(
+            'agatt-goog-analytics-viewability-percent',
+            __('Report Interval', 'agatt'),
+            array($this, 'agatt_option_generator'),
+            AGATT_MENU_SLUG,
+            'agatt-goog-analytics',
+            array(
+
+              'parent_element'   =>  'viewability',
+              'element'          =>  'percentOnScreen',
+              'type'             =>  'text',
+              'label_for'        =>  'Percent of container that must be on screen to be counted as viewable (example: 50%)',
+              'default'          =>  '50%'
+
+            )
+        );
+
+        add_settings_field(
+            'agatt-goog-analytics-viewability-google-active',
+            __('Report Interval', 'agatt'),
+            array($this, 'agatt_option_generator'),
+            AGATT_MENU_SLUG,
+            'agatt-goog-analytics',
+            array(
+
+              'parent_element'   =>  'viewability',
+              'element'          =>  'googleAnalytics',
+              'type'             =>  'checkbox',
+              'label_for'        =>  'Send viewablity events to Google',
+              'default'          =>  'true'
+
+            )
+        );
+
         # http://code.tutsplus.com/tutorials/create-a-settings-page-for-your-wordpress-theme--wp-20091
         add_settings_field(
             'agatt-goog-analytics-events',
@@ -196,10 +271,14 @@ class AGATT_Admin {
 
 
 
-        } elseif (!empty($args['element'])){
+        } elseif (empty($agatt_settings[$args['parent_element']])){
+            $r = '';
+        } elseif (!empty($args['parent_element']) && !empty($args['element'])){
             $r = $agatt_settings[$args['parent_element']][$args['element']];
-        } else {
+        } elseif (!empty($args['parent_element'])) {
             $r = $agatt_settings[$args['parent_element']];
+        } else {
+          $r = '';
         }
 
         if (empty($r)){
@@ -262,7 +341,7 @@ class AGATT_Admin {
                 }
 				echo '<input type="hidden" id="counter-for-repeat-element-'.$parent_element.'-'.$element.'" name="element-max-id-'.$parent_element.'-'.$element.'" value="'.$c.'">';
                 ?>
-				<a href="#" class="add-repeater">Track another click event.</a>
+				<a href="#" class="add-repeater">Track another event.</a>
             </ul>
             <?php
             break;
