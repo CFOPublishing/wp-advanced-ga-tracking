@@ -138,6 +138,23 @@ class AGATT_Admin {
             )
         );
 
+        add_settings_field(
+            'agatt-goog-analytics-viewability-check',
+            __('Track elements\' viewability', 'agatt'),
+            array($this, 'agatt_option_generator'),
+            AGATT_MENU_SLUG,
+            'agatt-goog-analytics',
+            array(
+
+              'parent_element'   =>  'viewability',
+              'element'          =>  'viewability_check',
+              'type'             =>  'checkbox',
+              'label_for'        =>  'Turn on viewability tracking',
+              'default'          =>  'false'
+
+            )
+        );
+
 
         # http://code.tutsplus.com/tutorials/create-a-settings-page-for-your-wordpress-theme--wp-20091
         add_settings_field(
@@ -271,7 +288,7 @@ class AGATT_Admin {
 
 
 
-        } elseif (empty($agatt_settings[$args['parent_element']])){
+        } elseif (empty($agatt_settings[$args['parent_element']]) || empty($agatt_settings[$args['parent_element']][$args['element']])){
             $r = '';
         } elseif (!empty($args['parent_element']) && !empty($args['element'])){
             $r = $agatt_settings[$args['parent_element']][$args['element']];
