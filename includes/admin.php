@@ -116,7 +116,7 @@ class AGATT_Admin {
               'parent_element'   =>  'scrolldepth',
               'element'          =>  'userTiming',
               'type'             =>  'checkbox',
-              'label_for'        =>  'Turn on scroll tracking',
+              'label_for'        =>  'Track the amount of time between pageload and first scroll.',
               'default'          =>  'true'
 
             )
