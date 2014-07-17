@@ -148,7 +148,7 @@ class AGATT_Admin {
             array(
               'parent_element'  =>  'click_tracker',
               'element'         =>  'track_these_elements',
-              'type'            =>  'repeating_text',
+              'type'            =>  'repeating_text_group',
               'label_for'       =>  '<a href="https://developers.google.com/analytics/devguides/collection/gajs/eventTrackerGuide" target="_blank">Read more about event tracking.</a>.',
               'default'         =>  array(0 => array(
                                         'domElement' => 'body',
@@ -231,7 +231,7 @@ class AGATT_Admin {
           case 'text':
             echo "<input type='text' name='agatt_settings[".$parent_element."][".$element."]' value='".esc_attr(self::agatt_setting($args, $default))."' class='".$args['parent_element']." ".$args['element']."' /> <label for='agatt_settings[".$parent_element."][".$element."]' class='".$args['parent_element']." ".$args['element']."' >" . $label . "</label>";
             break;
-          case 'repeating_text':
+          case 'repeating_text_group':
             $fields = $args['fields'];
             $c = 0;
             $group = self::agatt_setting($args, $default);
