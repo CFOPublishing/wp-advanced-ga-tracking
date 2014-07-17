@@ -52,7 +52,7 @@ class AGATT_Admin {
               'element'          =>  'scroll_tracking_check',
               'type'             =>  'checkbox',
               'label_for'        =>  'Turn on scroll tracking. <a href="http://scrolldepth.parsnip.io/" target="_blank">Learn more.</a>',
-              'default'          =>  'false'    
+              'default'          =>  'false'
 
             )
         );
@@ -120,7 +120,7 @@ class AGATT_Admin {
               'default'          =>  'true'
 
             )
-        );    
+        );
         add_settings_field(
             'agatt-goog-analytics-scroll-pixel_depth',
             __('Pixel Depth', 'agatt'),
@@ -136,8 +136,8 @@ class AGATT_Admin {
               'default'          =>  'true'
 
             )
-        ); 
-        
+        );
+
         # http://code.tutsplus.com/tutorials/create-a-settings-page-for-your-wordpress-theme--wp-20091
         add_settings_field(
             'agatt-goog-analytics-events',
@@ -186,22 +186,22 @@ class AGATT_Admin {
     public function agatt_goog_analytics_section(){
       echo 'Set up options for advanced Google Analytics tracking.';
     }
-    
+
     public function agatt_setting($args, $default = array()){
           # Once we're sure that we've enforced singleton, we'll take care of it that way.
           if (empty($agatt_settings)){
             $agatt_settings = get_option( $this->option_name, array() );
           }
         if (empty($agatt_settings)) {
-        
-            
-        
+
+
+
         } elseif (!empty($args['element'])){
             $r = $agatt_settings[$args['parent_element']][$args['element']];
         } else {
             $r = $agatt_settings[$args['parent_element']];
         }
-        
+
         if (empty($r)){
             #$default = array($args['parent_element'] => array($args['element'] => ''));
             return $default;
@@ -238,11 +238,11 @@ class AGATT_Admin {
             ?>
             <h3 class="agatt-event">Events to track:</h3>
             <ul class="repeater-container" for="repeat-element-<?php echo $parent_element; ?>-<?php echo $element; ?>" id="repeater-<?php echo $parent_element; echo '-'; echo $element; ?>">
-                <?php foreach ($group as $event){ 
+                <?php foreach ($group as $event){
                     if ($c > 0) { $id_c = '-'.$c; } else { $id_c = ''; }
                 ?>
                     <li class="repeat-element repeat-element-<?php echo $element; echo ' '; echo $element; echo ' '; echo $parent_element; ?> " id="repeat-element-<?php echo $parent_element.'-'.$element . $id_c; ?>">
-                        
+
                         <?php
 
                             foreach ($fields as $f_label => $field){
@@ -254,32 +254,32 @@ class AGATT_Admin {
                     </li>
                 <?php
                 $c++;
-                
+
                 }
 				echo '<input type="hidden" id="counter-for-repeat-element-'.$parent_element.'-'.$element.'" name="element-max-id-'.$parent_element.'-'.$element.'" value="'.$c.'">';
                 ?>
-				<a href="#" class="add-repeater">Track another click event.</a>  
+				<a href="#" class="add-repeater">Track another click event.</a>
             </ul>
             <?php
             break;
       }
-          
+
     }
-    
+
     public function add_admin_scripts($hook){
         global $pagenow;
-        
+
         wp_register_script(AGATT_SLUG . '-admin', AGATT_URL . 'assets/js/wpagatt-admin.js' , array( 'jquery' ));
-		
+
         if ('tools_page_agatt-menu' == $hook){
-            wp_enqueue_script(AGATT_SLUG.'-admin');    
+            wp_enqueue_script(AGATT_SLUG.'-admin');
         }
-        
+
     }
-    
+
     public function agatt_validator($input){
         $output = get_option( $this->option_name );
-        #var_dump($input); die();    
+        #var_dump($input); die();
         return $input;
     }
 
