@@ -104,6 +104,7 @@ class AGATT_HeadReady {
 
                 }
                 if (!empty($viewabilitySet['viewability_check']) && 'true' == $viewabilitySet['viewability_check']){
+                    
                     self::gen_viewability_fields();
 
                     if (!empty($viewabilitySet['reportInterval'])){
@@ -207,6 +208,7 @@ class AGATT_HeadReady {
         $deps = array('jquery');
         $deps_merged = array_merge($deps, $ga_js_a);
         #var_dump($hook); die();
+            wp_register_script(AGATT_SLUG . '-screentime', AGATT_URL . 'library/screentime/screentime.js' , $deps);
             wp_register_script(AGATT_SLUG . '-scrolldepth', AGATT_URL . 'library/jquery-scrolldepth/jquery.scrolldepth.js' , $deps);
             wp_register_script(AGATT_SLUG . '-scrolldepth-min', AGATT_URL . 'library/jquery-scrolldepth/jquery.scrolldepth.min.js' , $deps);
         #Replace this with a singleton call later.
@@ -214,8 +216,10 @@ class AGATT_HeadReady {
 
         if (!empty($agatt_settings['scrolldepth']['scroll_tracking_check']) && 'true' == $agatt_settings['scrolldepth']['scroll_tracking_check']){
                     if (SCRIPT_DEBUG){
+                        wp_enqueue_script(AGATT_SLUG . '-screentime');
                         wp_enqueue_script(AGATT_SLUG . '-scrolldepth-min');
                     } else {
+                        wp_enqueue_script(AGATT_SLUG . '-screentime');
                         wp_enqueue_script(AGATT_SLUG . '-scrolldepth');
                     }
         }
@@ -225,7 +229,7 @@ class AGATT_HeadReady {
     public function filter_script_order($array){
 
         $keys_to_unset = array();
-        $scripts_to_last = array(AGATT_SLUG . '-scrolldepth', AGATT_SLUG . '-scrolldepth-min');
+        $scripts_to_last = array(AGATT_SLUG . '-scrolldepth', AGATT_SLUG . '-scrolldepth-min', AGATT_SLUG . '-screentime');
         foreach($scripts_to_last as $script){
             $key = array_search($script,$array);
             if(false != $key){
