@@ -37,11 +37,14 @@ class AGATT_HeadReady {
 
     public function agatt_user_set_js_variables(){
         $scrollset = self::agatt_setting(array('parent_element' => 'scrolldepth'));
-        if (!empty($scrollset['scroll_tracking_check']) && 'true' == $scrollset['scroll_tracking_check']) {
+        $viewabilitySet = self::agatt_setting(array('parent_element' => 'viewability'));
+        if ((!empty($scrollset['scroll_tracking_check']) && 'true' == $scrollset['scroll_tracking_check'])
+              || (!empty($viewabilitySet['viewability_check']) && 'true' == $viewabilitySet['viewability_check'])) {
             ?>
             <script type="text/javascript">
+              <?php
+			  if (!empty($scrollset['scroll_tracking_check']) && 'true' == $scrollset['scroll_tracking_check']){
 
-                <?php
                     if (!empty($scrollset['scrolledElements'])){
 
                         $scrolled = explode(',', $scrollset['scrolledElements']);
@@ -98,16 +101,68 @@ class AGATT_HeadReady {
                     } else {
                         ?>var agatt_sd_pixel_Depth = true;<?php
                     }
+
+                }
+                if (!empty($viewabilitySet['viewability_check']) && 'true' == $viewabilitySet['viewability_check']){
+                    
+                    self::gen_viewability_fields();
+
+                    if (!empty($viewabilitySet['reportInterval'])){
+                        ?>
+                        var agatt_sd_viewability_reportInterval = <?php echo $viewabilitySet['reportInterval']; ?>;
+                        <?php
+                    } else {
+                        ?>var agatt_sd_viewability_reportInterval = 15;<?php
+                    }
+
+                    if (!empty($viewabilitySet['percentOnScreen'])){
+                        ?>
+                        var agatt_sd_viewability_percentOnScreen = <?php echo '"'.$viewabilitySet['percentOnScreen'].'"'; ?>;
+                        <?php
+                    } else {
+                        ?>var agatt_sd_viewability_percentOnScreen = "50%";<?php
+                    }
+
+                    if (!empty($viewabilitySet['googleAnalytics'])){
+                        ?>
+                        var agatt_sd_viewability_googleAnalytics = <?php echo $viewabilitySet['googleAnalytics']; ?>;
+                        <?php
+                    } else {
+                        ?>var agatt_sd_viewability_googleAnalytics = true;<?php
+                    }
+
+                }
                 ?>
+
+
                 jQuery(document).ready(function( $ ) {
 
-                    $.scrollDepth({
-                      minHeight: agatt_sd_minHeight,
-                      elements: agatt_scrolledElements,
-                      percentage: agatt_sd_percentage,
-                      userTiming: agatt_sd_userTiming,
-                      pixelDepth: agatt_sd_pixel_Depth
-                    });
+                    <?php
+                    if (!empty($scrollset['scroll_tracking_check']) && 'true' == $scrollset['scroll_tracking_check']){
+                    ?>
+
+                      $.scrollDepth({
+                        minHeight: agatt_sd_minHeight,
+                        elements: agatt_scrolledElements,
+                        percentage: agatt_sd_percentage,
+                        userTiming: agatt_sd_userTiming,
+                        pixelDepth: agatt_sd_pixel_Depth
+                      });
+                    <?php
+                    }
+
+                    if (!empty($viewabilitySet['viewability_check']) && 'true' == $viewabilitySet['viewability_check']){
+                    ?>
+
+                      $.screentime({
+                          fields: viewability_fields,
+                          reportInterval: agatt_sd_viewability_reportInterval,
+                          percentOnScreen: agatt_sd_viewability_percentOnScreen,
+                          googleAnalytics: agatt_sd_viewability_googleAnalytics
+                      })
+                    <?php
+                    }
+                    ?>
 
                 });
             </script>
@@ -120,6 +175,31 @@ class AGATT_HeadReady {
         agatt()->create_basic_jquery_ga_click_events($track_these);
     }
 
+    public function gen_viewability_fields(){
+      $track_these = self::agatt_setting(array('parent_element' => 'viewable_tracker', 'element' => 'track_these_viewable_elements'));
+      self::create_viewability_fields($track_these);
+    }
+
+    public function create_viewability_fields($args){
+        $count = count($args);
+        $c = 0;
+        echo 'var viewability_fields = [';
+        foreach ($args as $field){
+          $c++;
+          echo '{';
+
+          echo '  selector: "'.$field['selector'].'",';
+          echo '  name:  "'.$field['name'].'"';
+
+          if ($count != $c){
+            echo '},';
+          } else {
+            echo '}';
+          }
+        }
+        echo '];';
+    }
+
     public function add_scripts($hook){
         global $pagenow;
 
@@ -128,6 +208,7 @@ class AGATT_HeadReady {
         $deps = array('jquery');
         $deps_merged = array_merge($deps, $ga_js_a);
         #var_dump($hook); die();
+            wp_register_script(AGATT_SLUG . '-screentime', AGATT_URL . 'library/screentime/screentime.js' , $deps);
             wp_register_script(AGATT_SLUG . '-scrolldepth', AGATT_URL . 'library/jquery-scrolldepth/jquery.scrolldepth.js' , $deps);
             wp_register_script(AGATT_SLUG . '-scrolldepth-min', AGATT_URL . 'library/jquery-scrolldepth/jquery.scrolldepth.min.js' , $deps);
         #Replace this with a singleton call later.
@@ -135,8 +216,10 @@ class AGATT_HeadReady {
 
         if (!empty($agatt_settings['scrolldepth']['scroll_tracking_check']) && 'true' == $agatt_settings['scrolldepth']['scroll_tracking_check']){
                     if (SCRIPT_DEBUG){
+                        wp_enqueue_script(AGATT_SLUG . '-screentime');
                         wp_enqueue_script(AGATT_SLUG . '-scrolldepth-min');
                     } else {
+                        wp_enqueue_script(AGATT_SLUG . '-screentime');
                         wp_enqueue_script(AGATT_SLUG . '-scrolldepth');
                     }
         }
@@ -146,7 +229,7 @@ class AGATT_HeadReady {
     public function filter_script_order($array){
 
         $keys_to_unset = array();
-        $scripts_to_last = array(AGATT_SLUG . '-scrolldepth', AGATT_SLUG . '-scrolldepth-min');
+        $scripts_to_last = array(AGATT_SLUG . '-scrolldepth', AGATT_SLUG . '-scrolldepth-min', AGATT_SLUG . '-screentime');
         foreach($scripts_to_last as $script){
             $key = array_search($script,$array);
             if(false != $key){
