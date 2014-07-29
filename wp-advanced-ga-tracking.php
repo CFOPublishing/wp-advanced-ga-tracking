@@ -5,7 +5,7 @@ Plugin Name: Advanced Google Analytics Tracking Tools
 Plugin URI: http://cfo.com/
 Description: Advanced tracking for Google Analytics.
 Version: 0.0.1
-Author: Aram Zucker-Scharff
+Author: Aram Zucker-Scharff, Rob Flaherty
 Author URI: http://cfo.com/
 License: GPL2
 */
