@@ -5,6 +5,7 @@ var elementCounter = 1;
             var parentID =  parent.attr('id');
             var elementID = parent.attr('for');
             var elementRow = jQuery('#'+parentID + " #" + elementID).clone();
+            var elementCounter = jQuery("#counter-for-"+elementID).val();
             var newID = elementID + "-" + elementCounter;
             //console.log(elementRow);
             elementRow.attr("id", newID);

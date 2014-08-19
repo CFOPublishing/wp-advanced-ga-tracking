@@ -379,7 +379,7 @@ class AGATT_Admin {
 
     public function agatt_validator($input){
         $output = get_option( $this->option_name );
-        #var_dump($input); die();
+        echo '<pre>'; var_dump($input); die();
         return $input;
     }
 
