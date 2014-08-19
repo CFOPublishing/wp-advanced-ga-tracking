@@ -33,7 +33,7 @@ define( 'AGATT_MENU_SLUG', AGATT_SLUG . '-menu' );
 define( 'AGATT_ROOT', dirname(__FILE__) );
 define( 'AGATT_FILE_PATH', AGATT_ROOT . '/' . basename(__FILE__) );
 define( 'AGATT_URL', plugins_url('/', __FILE__) );
-define( 'AGATT_VERSION', '0.0.1' );
+define( 'AGATT_VERSION', '1.0.2' );
 
 class Advanced_Google_Analytics_Tracking {
 
