@@ -5,7 +5,7 @@ Plugin Name: Advanced Google Analytics Tracking Tools
 Plugin URI: http://cfo.com/
 Description: Advanced tracking for Google Analytics.
 Version: 0.0.1
-Author: Aram Zucker-Scharff
+Author: Aram Zucker-Scharff, Rob Flaherty
 Author URI: http://cfo.com/
 License: GPL2
 */
@@ -39,7 +39,7 @@ class Advanced_Google_Analytics_Tracking {
 
     var $admin;
     var $headready;
-    
+
     public static function init() {
 		static $instance;
 
@@ -52,11 +52,11 @@ class Advanced_Google_Analytics_Tracking {
 
 	// See http://php.net/manual/en/language.oop5.decon.php to get a better understanding of what's going on here.
 	private function __construct() {
-        
+
         $this->includes();
-        
+
         $this->set_up_admin();
-        $this->set_up_headready();        
+        $this->set_up_headready();
     }
 
 	/**
@@ -107,7 +107,7 @@ class Advanced_Google_Analytics_Tracking {
     }
 
     public function create_basic_jquery_ga_click_events($args){
-      
+
       #Should we be minifying the output via https://github.com/tedious/JShrink instead?
       ?>
       <script type="text/javascript">
@@ -120,17 +120,17 @@ jQuery('body').on("click", "<?php echo $event['domElement']; ?>", function() {
         <?php
       }
       ?>});
-      </script>    
+      </script>
       <?php
 
     }
-    
+
     function set_up_admin(){
         if ( empty( $this->admin ) ){
             $this->admin = new AGATT_Admin;
         }
     }
-    
+
     function set_up_headready(){
         if ( empty( $this->headready ) ){
             $this->headready = new AGATT_HeadReady;
@@ -154,3 +154,5 @@ function agatt() {
 
 // Start me up!
 agatt();
+
+include('library/rivited/wp-plugin/riveted/riveted.php');
