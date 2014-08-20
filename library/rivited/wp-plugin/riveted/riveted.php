@@ -89,7 +89,7 @@ function load_riveted() {
 
   //print_r($options);
 
-  wp_enqueue_script( 'riveted', plugins_url() . '/riveted/js/riveted-wp.js', array(), '0.3', true );
+  wp_enqueue_script( 'riveted', plugins_url('/', __FILE__).'js/riveted-wp.js', array(), '0.3', true );
   wp_localize_script( 'riveted', 'riveted_options', $options );
 }
 
