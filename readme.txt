@@ -11,7 +11,7 @@ Creates user controls to allow tracking of detailed engagement metrics with Goog
 
 == Description ==
 
-The Advanced Google Analytics Tracking plugin allows users to set and track a variaty of events that indicate engagement and send those metrics to Google Analytics. 
+The Advanced Google Analytics Tracking plugin allows users to set and track a variety of events that indicate engagement and send those metrics to Google Analytics. 
 
 * Time user spends actively engaging the site (clicking, scrolling, using the keyboard).
 * Depth to which users scroll on a page, as either a percentage or a pixel value.
