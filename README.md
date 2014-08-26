@@ -1,10 +1,15 @@
 === Advanced Google Analytics Tracking for WordPress ===
 
 Contributors: AramZS, robflaherty, cfo-publishing
+
 Tags: analytics, Google Analytics, tracking, engagement, testing, scroll depth, time engaged, viewability
+
 Requires at least: 2.7
+
 Tested up to: 3.9.1
+
 Stable tag: 1.0.2
+
 License: GPL2
 
 Creates user controls to allow tracking of detailed engagement metrics with Google Analytics.
