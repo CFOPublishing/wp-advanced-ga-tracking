@@ -15,7 +15,7 @@ The Advanced Google Analytics Tracking plugin allows users to set and track a va
 
 * Time user spends actively engaging the site (clicking, scrolling, using the keyboard).
 * Depth to which users scroll on a page, as either a percentage or a pixel value.
-* Viewability of individual elements, defined with your own number of seconds on element and percentage of element visable.
+* Viewability of individual elements, defined with your own number of seconds on element and percentage of element visible.
 * Clicks on individual elements on the page. Great for A/B testing!
 
 You can contribute to this project at our [GitHub](https://github.com/CFOPublishing/wp-advanced-ga-tracking).
@@ -32,7 +32,7 @@ This plugin rolls in the Rivited plugin and will not work if you are already run
 
 Note: *You must already have your Google Analytics code active on page.*
 
-This plugin is not yet compatable with Google's Universal Analytics, but soon will be.
+This plugin is not yet compatible with Google's Universal Analytics, but soon will be.
 
 == Frequently Asked Questions ==
 
@@ -46,7 +46,7 @@ The two menus are due to two plugins rolled together. They will eventually be un
 
 = Why did my site crash when I tried to install this plugin? =
 
-You probobly had the Rivited plugin installed and active. 
+You probably had the Rivited plugin installed and active. 
 
 == Changelog ==
 
